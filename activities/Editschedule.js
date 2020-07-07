@@ -1,5 +1,5 @@
 import React,{useState} from "react";
-import {View,StyleSheet,TextInput,Button,TouchableOpacity, Keyboard} from "react-native";
+import {View,StyleSheet,TextInput,Button,TouchableOpacity, Keyboard,Alert} from "react-native";
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 export default function Editschedule({route,handleWork,navigation}) {
@@ -15,28 +15,81 @@ export default function Editschedule({route,handleWork,navigation}) {
         description: route.params.desc,
     });
 
+    function valid(val){
+        console.log(`Start ${text.startTime}`);
+        console.log(text.startTime.hour);
+        if(val.title === undefined || val.title === ""
+           ||val.startTime.hour === undefined || val.startTime === "" || val.startTime === {}
+           ||val.endTime.hour === undefined || val.endTime === "" || val.endTime === {}) {
+               return false;
+        }
+        return true;
+    }
+
     function addWork() {
-        handleWork(text);
-        setText({
-            id:route.params.id,
-            title: "",
-            startTime: {
-                hour: 0,
-                minute: 0,
-            },
-            endTime: {
-                hour: 0,
-                minute: 0,
-            },
-            description: "",
-        });
-        navigation.goBack();
+        if (valid(text)){
+            handleWork(text);
+            setText({
+                id:route.params.id,
+                title: "",
+                startTime: {
+                    hour: 0,
+                    minute: 0,
+                },
+                endTime: {
+                    hour: 0,
+                    minute: 0,
+                },
+                description: "",
+            });
+            navigation.goBack();
+        }
+
+        else {
+             if(text.title === "" || text.title === undefined) {
+                Alert.alert(
+                    "Sorry !",
+                    "Title cannot be empty",
+                    [
+                      { text: "OK", onPress: () => console.log("OK Pressed") }
+                    ],
+                    { cancelable: false }
+                );
+             }
+             else if(text.startTime.hour === undefined || text.startTime === "" || text.startTime === {}) {
+                Alert.alert(
+                    "Please select a start time",
+                    "Start time cannot be empty",
+                    [
+                      { text: "OK", onPress: () => console.log("OK Pressed") }
+                    ],
+                    { cancelable: false }
+                );
+             }
+             else if(text.endTime.hour === undefined || text.endTime === "" || text.endTime === {}) {
+                Alert.alert(
+                    "Please select a end time",
+                    "End time cannot be empty",
+                    [
+                      { text: "OK", onPress: () => console.log("OK Pressed") }
+                    ],
+                    { cancelable: false }
+                );
+             }
+        }
+        
     }
 
     function startTimeHandler(event,val){
         let date = new Date(val+"");
         let hour = date.getHours();
+        if(hour < 10){
+            hour = "0" + hour;
+        }
         let minute = date.getMinutes();
+        if(minute < 10){
+            minute = "0" + minute;
+        }
         setStart(false);
         setText(prev => {
             return {
@@ -52,7 +105,13 @@ export default function Editschedule({route,handleWork,navigation}) {
     function endTimeHandler(event,val){
         let date = new Date(val+"");
         let hour = date.getHours();
+        if(hour < 10){
+            hour = "0" + hour;
+        }
         let minute = date.getMinutes();
+        if(minute < 10){
+            minute = "0" + minute;
+        }
         setEnd(false);
         setText(prev => {
             return {

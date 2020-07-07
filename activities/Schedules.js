@@ -45,7 +45,7 @@ export default function Schedule({work,setWork,setModal}) {
             }
         ];
         storeData(data).then(()=>{
-            getData().then(val => setWork(val.sort((a,b) => a.startTime.hour - b.startTime.hour)));
+            getData().then(val => setWork(val.sort((a,b) => (a.startTime.hour*60+a.startTime.minute) - (b.startTime.hour*60+b.startTime.minute))));
         });
        
     }
@@ -60,7 +60,7 @@ export default function Schedule({work,setWork,setModal}) {
 
     return (
         <View style={styles.container} >
-            
+
             <NavigationContainer>
                 <Stack.Navigator>
                     <Stack.Screen 
@@ -95,5 +95,6 @@ export default function Schedule({work,setWork,setModal}) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: "rgba(0,0,0,0)",
     },
 });

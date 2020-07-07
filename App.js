@@ -30,7 +30,7 @@ const App = () => {
   const [work,setWork] = useState();
 
   useEffect(()=>{
-    getData().then(val => setWork(val.sort((a,b) => a.startTime.hour - b.startTime.hour)));
+    getData().then(val => setWork(val.sort((a,b) => (a.startTime.hour*60+a.startTime.minute) - (b.startTime.hour*60+b.startTime.minute))));
   },[]);
 
   return ( 

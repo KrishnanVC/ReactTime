@@ -9,23 +9,30 @@ export default function Showschedule({navigation,work,removeWork,setModal}) {
 
     return(
         <View style={styles.container}>
+
             <TouchableOpacity style={styles.Settings}  onPress={() => setModal(false)}>
-                <View>
+                <View style={{alignItems:"center",justifyContent:"center"}}>
+                    <Text style={{color:"#fff"}}>Schedules</Text>
                     <Text style={{color: "#fff"}}>
                         <FontAwesomeIcon style={{color:"#fff"}} icon="angle-down" />
-                        <Text>Schedules</Text>
                     </Text>
                 </View>
             </TouchableOpacity>
             
-            <FlatList
-               style = {styles.list}
-               data={work}
-               renderItem={({ item }) => {
-                   return (<Cards item={item} removeWork={removeWork} navigation={navigation}/>)
-               }}
-               keyExtractor={item => item.id+""}
-            />
+            {work.length?
+                <FlatList
+                style = {styles.list}
+                data={work}
+                renderItem={({ item }) => {
+                    return (<Cards item={item} removeWork={removeWork} navigation={navigation}/>)
+                }}
+                keyExtractor={item => item.id+""}
+                />
+                :
+                <View style={styles.emptyList}>
+                    <Text style={{color:"#616161"}}>No Schedules Planned</Text>
+                </View>
+            }
             <View style={styles.btnContainer}>
                 <TouchableOpacity style={styles.addBtn}>
                         <FontAwesomeIcon size={25} style={{color:"#f1f1f1"}} icon="plus" onPress={() => {navigation.navigate("Edit")}} /> 
@@ -51,6 +58,14 @@ const styles = StyleSheet.create({
     
     list: {
         flex: 1,
+        backgroundColor: "rgba(0,0,0,0)"
+    },
+
+    emptyList: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "rgba(0,0,0,0)"
     },
 
     addBtn: {
@@ -68,7 +83,7 @@ const styles = StyleSheet.create({
     Settings: {
         width: 400,
         top:-10,
-        padding: 20,
+        padding: 10,
         backgroundColor: "rgb(9,157,115)",
         justifyContent: "center",
         alignItems: "center",
@@ -78,8 +93,9 @@ const styles = StyleSheet.create({
         flex: 0.12,
         paddingHorizontal: 150,
         width: Dimensions.width,
-        backgroundColor: "#dfdfdf",
+        backgroundColor: "rgba(0,0,0,0)",
         alignContent: "center",
         justifyContent:"center"
-    }
+    },
+
 })

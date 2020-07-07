@@ -6,10 +6,6 @@ export default function Cards({item,removeWork,navigation}) {
 
     const [isExpanded,setExpanded] = useState(false);
 
-    console.log(item["startTime"]);
-    console.log("Cards");
-    console.log(item);
-
     function handleEdit() {
         navigation.navigate("Edit",
                 {
@@ -57,6 +53,7 @@ const styles = StyleSheet.create({
     },
 
     listItemText: {
+        flex:3,
         fontWeight: "bold",
         color: "white",
         fontSize: 20,
