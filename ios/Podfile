@@ -87,6 +87,9 @@ target 'Today' do
 
   pod 'RNDateTimePicker', :path => '../node_modules/@react-native-community/datetimepicker'
 
+
+  pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
+
   target 'TodayTests' do
     inherit! :complete
     # Pods for testing

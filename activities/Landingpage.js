@@ -66,7 +66,7 @@ export default function Landingpage({ work,setWork}) {
                 
                 if(inInterval(work[i])) {
 
-                    let prefillVal = parseInt(getCurrentDuration(work[i])/getTotalDuration(work[i]));
+                    let prefillVal = parseInt(getCurrentDuration(work[i]) * 100/getTotalDuration(work[i]));
                     console.log(prefillVal);
                     setPrefill(prefillVal);
                     setCurrent(work[i].title);
