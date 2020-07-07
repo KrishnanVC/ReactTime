@@ -14,46 +14,60 @@ export default function Landingpage({ work,setWork}) {
     const [modalVisible,setModal] = useState(false);
     const anime = useRef(null);
 
-    function inInterval(work,hour,minute) {
-        
+    function getTotalDuration(work) {
         let startHour = work.startTime.hour; 
         let startMinute = work.startTime.minute; 
         let endHour = work.endTime.hour; 
         let endMinute = work.endTime.minute;
+        
+        let startDur = startHour*60 + startMinute;
+        let endDur = endHour*60 + endMinute;
 
-        if(hour<=endHour && hour>=startHour) {
-            if(hour === endHour && hour === startHour){
-                if(minute<endMinute && minute>=startMinute){
-                    console.log(true);
-                    return true;
-                }
-                else {
-                    return false;
-                }
-            }
+        if(startDur > endDur){
+            endDur += 1440
+        }
+
+        return (endDur - startDur)*60;
+    }
+
+    function getCurrentDuration(work) {
+        let startHour = work.startTime.hour; 
+        let startMinute = work.startTime.minute; 
+        let date = new Date();
+        let hour = date.getHours();
+        let minute = date.getMinutes();
+        let second = date.getSeconds();
+
+        let startDur = startHour*3600 + startMinute*60;
+        let currDur = hour*3600 + minute*60 + second;
+
+        if(startDur > currDur){
+            currDur += 1440*60
+        }
+
+        return (currDur - startDur);
+        
+    }
+
+    function inInterval(work) {
+
+        if (getCurrentDuration(work) < getTotalDuration(work)){
             return true;
         }
-        console.log(false);
         return false;
     }
 
     useEffect(() => {
         
         let flag = 0;
-        let date = new Date();
-        let hour = date.getHours();
-        let minute = date.getMinutes();
                 
         if(work !== undefined){
             for(let i=0;i<work.length;i++){
                 
-                if(inInterval(work[i],hour,minute)) {
+                if(inInterval(work[i])) {
 
-                    let prefillVal = parseInt(((minute - work[i].startTime.minute) * 100 ) / 
-                            ((work[i].endTime.hour*60+work[i].endTime.minute) - (work[i].startTime.hour*60+work[i].startTime.minute)));
-                    let durationVal = ((work[i].endTime.hour*60+work[i].endTime.minute) - (work[i].startTime.hour*60+work[i].startTime.minute)) * 60000;
+                    let prefillVal = parseInt(getCurrentDuration(work[i])/getTotalDuration(work[i]));
                     console.log(prefillVal);
-                    console.log(durationVal);
                     setPrefill(prefillVal);
                     setCurrent(work[i].title);
                     flag = 1;
