@@ -15,10 +15,10 @@ export default function Landingpage({ work,setWork}) {
     const anime = useRef(null);
 
     function getTotalDuration(work) {
-        let startHour = work.startTime.hour; 
-        let startMinute = work.startTime.minute; 
-        let endHour = work.endTime.hour; 
-        let endMinute = work.endTime.minute;
+        let startHour = parseInt(work.startTime.hour); 
+        let startMinute = parseInt(work.startTime.minute); 
+        let endHour = parseInt(work.endTime.hour); 
+        let endMinute = parseInt(work.endTime.minute);
         
         let startDur = startHour*60 + startMinute;
         let endDur = endHour*60 + endMinute;
@@ -31,8 +31,8 @@ export default function Landingpage({ work,setWork}) {
     }
 
     function getCurrentDuration(work) {
-        let startHour = work.startTime.hour; 
-        let startMinute = work.startTime.minute; 
+        let startHour = parseInt(work.startTime.hour); 
+        let startMinute = parseInt(work.startTime.minute); 
         let date = new Date();
         let hour = date.getHours();
         let minute = date.getMinutes();
@@ -67,7 +67,6 @@ export default function Landingpage({ work,setWork}) {
                 if(inInterval(work[i])) {
 
                     let prefillVal = parseInt(getCurrentDuration(work[i]) * 100/getTotalDuration(work[i]));
-                    console.log(prefillVal);
                     setPrefill(prefillVal);
                     setCurrent(work[i].title);
                     flag = 1;
@@ -78,7 +77,6 @@ export default function Landingpage({ work,setWork}) {
             if(flag === 0){
                 setPrefill(0);
                 setCurrent("No works Scheduled");
-                console.log("Hi");
             }
         }
         
@@ -91,7 +89,7 @@ export default function Landingpage({ work,setWork}) {
     return (
         <GestureRecognizer style={{flex:1}} onSwipeUp={() => setModal(true)} >
             <View style={styles.container}>
-                <StatusBar backgroundColor="#rgb(40,40,40)"/>
+                <StatusBar backgroundColor="#rgb(40,40,40)" hidden={false} />
                 <Image
                 source={require("../public/src/img/bg2.jpg")}
                 style={styles.bgImage} 
@@ -105,7 +103,7 @@ export default function Landingpage({ work,setWork}) {
                         fill={100}
                         easing = {Easing.linear(Easing.linear)}
                         tintColor="rgb(9,210,115)"
-                        onAnimationComplete={() =>{console.log('onAnimationComplete');reAnime();setComplete(prev => !prev)}}
+                        onAnimationComplete={() =>{reAnime();setComplete(prev => !prev)}}
                         backgroundColor="#9191aa"
                         rotation={0} >
                             {() => (
